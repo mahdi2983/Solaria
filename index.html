@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+  <title>SOLARIA — Signature Monolithic Residences | French Riviera</title>
+  <meta name="description" content="An exclusive cliffside enclave of 18 monolithic architectural residences cast in travertine, raw basalt and bronze overlooking the Mediterranean Sea at Cap d'Antibes." />
+
+  <!-- Google Fonts Preconnect & Stylesheets -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            solaria: {
+              alabaster: "#F9F8F5",
+              obsidian: "#0A0A0C",
+              travertine: "#F1EFEA",
+              travertineDark: "#141417",
+              bronze: "#BFA175",
+              bronzeLight: "#D9C3A3",
+              bronzeDark: "#8E724B",
+              basalt: "#16161A",
+              basaltLight: "#EDEDF0",
+              sand: "#787571",
+              sandLight: "#8C8A87",
+            }
+          },
+          fontFamily: {
+            display: ["Syne", "-apple-system", "sans-serif"],
+            editorial: ["Playfair Display", "Georgia", "serif"],
+            mono: ["JetBrains Mono", "monospace"],
+            cinzel: ["Cinzel", "serif"]
+          },
+          transitionTimingFunction: {
+            luxury: "cubic-bezier(0.32, 0.72, 0, 1)",
+            architectural: "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP & Lenis Smooth Scroll -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+
+  <style>
+    :root {
+      --font-display: 'Syne', sans-serif;
+      --font-editorial: 'Playfair Display', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: #0A0A0C;
+      color: #EDEDF0;
+      font-family: var(--font-display);
+      overflow-x: hidden;
+      transition: background-color 0.6s cubic-bezier(0.32, 0.72, 0, 1), color 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    ::selection {
+      background-color: #BFA175;
+      color: #0A0A0C;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(191, 161, 117, 0.4);
+      border-radius: 9999px;
+    }
+
+    /* SVG Grain Texture Overlay */
+    .noise-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.035;
+    }
+
+    /* Ken Burns Ambient Zoom */
+    @keyframes kenburns {
+      0% { transform: scale(1.02) translate(0, 0); }
+      50% { transform: scale(1.06) translate(-1%, -0.5%); }
+      100% { transform: scale(1.02) translate(0, 0); }
+    }
+    .animate-kenburns {
+      animation: kenburns 28s ease-in-out infinite alternate;
+    }
+
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="bg-[#0A0A0C] text-[#EDEDF0] selection:bg-[#BFA175] selection:text-[#0A0A0C]">
+
+  <!-- SVG Noise Filter Overlay -->
+  <div class="noise-overlay" aria-hidden="true">
+    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+      <filter id="noiseFilter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+        <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" />
+      </filter>
+      <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+    </svg>
+  </div>
+
+  <!-- Bespoke Luxury Custom Cursor -->
+  <div id="custom-cursor-wrapper" class="hidden lg:block pointer-events-none fixed inset-0 z-[99999] overflow-hidden">
+    <div id="custom-cursor" class="fixed top-0 left-0 rounded-full flex items-center justify-center border border-[#BFA175]/60 bg-[#BFA175]/10 backdrop-blur-[2px] w-6 h-6 -translate-x-3 -translate-y-3 transition-transform duration-100 ease-out">
+      <span id="cursor-text" class="font-mono text-[9px] uppercase tracking-widest text-[#BFA175] font-bold select-none text-center px-1"></span>
+    </div>
+    <div id="cursor-dot" class="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-[#BFA175] -translate-x-[3px] -translate-y-[3px] transition-transform duration-75"></div>
+  </div>
+
+  <!-- Architectural Preloader -->
+  <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-between bg-[#0A0A0C] text-[#EDEDF0] px-8 py-12 pointer-events-auto select-none cursor-pointer transition-all duration-700" style="clip-path: ellipse(100% 100% at 50% 50%);">
+    <div class="w-full flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.25em] text-[#8C8A87]/70">
+      <div class="flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#BFA175] animate-pulse"></span>
+        <span>SOLARIA ARCHITECTURAL FOUNDATION</span>
+      </div>
+      <span>43°33'12"N 7°07'48"E</span>
+    </div>
+
+    <div class="flex flex-col items-center justify-center my-auto text-center">
+      <div class="relative w-28 h-40 mb-8 flex items-center justify-center">
+        <svg viewBox="0 0 100 150" class="absolute inset-0 w-full h-full stroke-[#BFA175]/40 fill-none" stroke-width="1.5">
+          <path id="preloader-arch" d="M 10,140 L 10,60 A 40,40 0 0,1 90,60 L 90,140 Z" stroke-dasharray="400" stroke-dashoffset="400" style="transition: stroke-dashoffset 0.1s linear;" />
+          <line x1="10" y1="140" x2="90" y2="140" stroke="currentColor" stroke-width="1" class="opacity-50" />
+          <circle cx="50" cy="60" r="12" stroke="currentColor" stroke-width="1" class="opacity-60" />
+        </svg>
+        <span id="preloader-counter" class="font-mono text-xl font-light tracking-tight text-[#D9C3A3]">00%</span>
+      </div>
+      <h1 class="font-display text-2xl md:text-3xl tracking-[0.3em] uppercase text-[#EDEDF0] font-light">SOLARIA</h1>
+      <p class="font-editorial italic text-[#BFA175] text-sm md:text-base mt-2 tracking-wide">Signature Monolithic Residences</p>
+    </div>
+
+    <div class="w-full flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-[#8C8A87]/50">
+      <span>18 CLIFFSIDE LOTS — CÔTE D'AZUR</span>
+      <span>CLICK TO ENTER • MMXXVI</span>
+    </div>
+  </div>
+
+  <!-- Minimalist Floating Fullscreen HUD Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 sm:px-10 md:px-14 py-6 pointer-events-none text-white select-none">
+    <!-- Brand -->
+    <a href="#hero" class="pointer-events-auto flex items-center gap-3 group focus:outline-none" aria-label="SOLARIA - Top">
+      <div class="w-8 h-8 rounded-full border border-[#BFA175]/50 bg-black/40 backdrop-blur-md flex items-center justify-center text-[#BFA175] font-mono text-xs font-semibold transition-transform duration-500 group-hover:scale-105">
+        S
+      </div>
+      <div class="flex flex-col">
+        <span class="font-display tracking-[0.25em] text-xs sm:text-sm font-semibold uppercase text-white drop-shadow-sm">SOLARIA</span>
+        <span class="font-mono text-[8px] tracking-[0.2em] text-[#BFA175] hidden sm:block">CAP D'ANTIBES • MMXXVI</span>
+      </div>
+    </a>
+
+    <!-- Center Live Chapter Tracker -->
+    <div class="hidden lg:flex items-center gap-3 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 font-mono text-[10px] uppercase tracking-[0.2em] text-white/90">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#BFA175] animate-pulse"></span>
+      <span id="header-chapter-num" class="text-[#BFA175]">01</span>
+      <span class="text-white/30">—</span>
+      <span id="header-chapter-title">THE ENCLAVE</span>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="pointer-events-auto flex items-center gap-2 sm:gap-3">
+      <!-- Ambient Ocean Audio Toggle -->
+      <button id="sound-toggle" data-cursor="SOUND" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/40 hover:bg-black/60 text-[#D9C3A3] border border-white/10 backdrop-blur-md font-mono text-[10px] uppercase tracking-widest transition-all duration-300">
+        <svg id="sound-icon-on" class="w-3.5 h-3.5 text-[#BFA175] hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3.23v17.54a1 1 0 0 1-1.63.78L6.7 17H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3.7l5.67-4.55A1 1 0 0 1 14 3.23zM16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        <svg id="sound-icon-off" class="w-3.5 h-3.5 text-[#787571]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        <span id="sound-text" class="hidden sm:inline">Sound / Off</span>
+      </button>
+
+      <!-- Day / Dusk Ambient Mood -->
+      <button id="dusk-toggle" data-cursor="LIGHT" class="p-2 sm:px-3 sm:py-1.5 rounded-full bg-black/40 hover:bg-black/60 border border-white/10 backdrop-blur-md flex items-center gap-1.5 text-[#D9C3A3] font-mono text-[10px] uppercase tracking-wider transition-all duration-300">
+        <svg id="moon-icon" class="w-3.5 h-3.5 text-[#BFA175]" viewBox="0 0 24 24" fill="currentColor"><path d="M12.3 2a10 10 0 0 0-.19 14 10 10 0 0 0 11.69 1.81A10 10 0 1 1 12.3 2z"/></svg>
+        <svg id="sun-icon" class="w-3.5 h-3.5 text-[#BFA175] hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <span id="dusk-text" class="hidden sm:inline">Dusk</span>
+      </button>
+
+      <!-- Inquire Button -->
+      <a href="#acquisition" data-cursor="INQUIRE" class="hidden sm:inline-flex items-center gap-2 pl-3.5 pr-1.5 py-1.5 rounded-full bg-[#BFA175] text-[#0A0A0C] font-display text-[11px] font-semibold tracking-wider uppercase transition-all duration-500 hover:bg-[#cca87d] active:scale-95 shadow-sm">
+        <span>Inquire</span>
+        <span class="w-5 h-5 rounded-full bg-black/15 flex items-center justify-center">↗</span>
+      </a>
+
+      <!-- Menu Toggle -->
+      <button id="menu-toggle" data-cursor="MENU" aria-label="Toggle Fullscreen Menu" class="w-9 h-9 rounded-full bg-black/40 hover:bg-black/60 border border-white/10 backdrop-blur-md flex flex-col items-center justify-center gap-1.5 focus:outline-none transition-colors">
+        <span id="menu-bar-1" class="w-4 h-[1.5px] bg-white transition-all duration-500"></span>
+        <span id="menu-bar-2" class="w-4 h-[1.5px] bg-white transition-all duration-500"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Right Screen Progress Bar -->
+  <div class="fixed right-3 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col items-center gap-2 pointer-events-none">
+    <div class="w-[2px] h-28 bg-white/10 rounded-full overflow-hidden">
+      <div id="scroll-progress-bar" class="w-full bg-[#BFA175] transition-all duration-150 ease-out rounded-full" style="height: 0%;"></div>
+    </div>
+    <span id="scroll-progress-text" class="font-mono text-[8px] text-[#BFA175]/80 tracking-widest uppercase rotate-90 mt-2">0%</span>
+  </div>
+
+  <!-- Full-Screen Curtain Menu Overlay -->
+  <div id="fullscreen-menu" class="fixed inset-0 z-50 flex flex-col justify-between p-8 sm:p-14 md:p-20 bg-[#0A0A0C] text-[#EDEDF0] backdrop-blur-3xl overflow-y-auto pointer-events-none opacity-0 transition-all duration-700 ease-luxury" style="clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);">
+    <div class="flex items-center justify-between border-b border-white/10 pb-6">
+      <div class="font-mono text-xs text-[#BFA175] tracking-[0.25em] uppercase">SOLARIA ARCHITECTURAL INDEX</div>
+      <button id="menu-close-btn" class="font-mono text-xs uppercase tracking-widest text-white/70 hover:text-[#BFA175] transition-colors">[ CLOSE INDEX ]</button>
+    </div>
+
+    <div class="flex flex-col gap-6 my-auto py-8">
+      <a href="#hero" class="menu-link group flex flex-col md:flex-row md:items-baseline justify-between border-b border-white/5 pb-4">
+        <div class="flex items-baseline gap-4 md:gap-8">
+          <span class="font-mono text-xs sm:text-sm text-[#BFA175] font-light">01</span>
+          <span class="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light uppercase tracking-tight text-white group-hover:text-[#BFA175] transition-colors duration-400">The Enclave</span>
+        </div>
+        <span class="font-mono text-xs text-[#787571] group-hover:text-[#D9C3A3] transition-colors mt-2 md:mt-0 tracking-wider">Rooted in Cliffside Bedrock</span>
+      </a>
+
+      <a href="#manifesto" class="menu-link group flex flex-col md:flex-row md:items-baseline justify-between border-b border-white/5 pb-4">
+        <div class="flex items-baseline gap-4 md:gap-8">
+          <span class="font-mono text-xs sm:text-sm text-[#BFA175] font-light">02</span>
+          <span class="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light uppercase tracking-tight text-white group-hover:text-[#BFA175] transition-colors duration-400">Manifesto</span>
+        </div>
+        <span class="font-mono text-xs text-[#787571] group-hover:text-[#D9C3A3] transition-colors mt-2 md:mt-0 tracking-wider">Light, Travertine &amp; Void</span>
+      </a>
+
+      <a href="#gallery" class="menu-link group flex flex-col md:flex-row md:items-baseline justify-between border-b border-white/5 pb-4">
+        <div class="flex items-baseline gap-4 md:gap-8">
+          <span class="font-mono text-xs sm:text-sm text-[#BFA175] font-light">03</span>
+          <span class="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light uppercase tracking-tight text-white group-hover:text-[#BFA175] transition-colors duration-400">Gallery of Materia</span>
+        </div>
+        <span class="font-mono text-xs text-[#787571] group-hover:text-[#D9C3A3] transition-colors mt-2 md:mt-0 tracking-wider">Architectural Immersion</span>
+      </a>
+
+      <a href="#residences" class="menu-link group flex flex-col md:flex-row md:items-baseline justify-between border-b border-white/5 pb-4">
+        <div class="flex items-baseline gap-4 md:gap-8">
+          <span class="font-mono text-xs sm:text-sm text-[#BFA175] font-light">04</span>
+          <span class="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light uppercase tracking-tight text-white group-hover:text-[#BFA175] transition-colors duration-400">The 18 Residences</span>
+        </div>
+        <span class="font-mono text-xs text-[#787571] group-hover:text-[#D9C3A3] transition-colors mt-2 md:mt-0 tracking-wider">Living Matrix &amp; Blueprints</span>
+      </a>
+
+      <a href="#wellness" class="menu-link group flex flex-col md:flex-row md:items-baseline justify-between border-b border-white/5 pb-4">
+        <div class="flex items-baseline gap-4 md:gap-8">
+          <span class="font-mono text-xs sm:text-sm text-[#BFA175] font-light">05</span>
+          <span class="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light uppercase tracking-tight text-white group-hover:text-[#BFA175] transition-colors duration-400">Elemental Wellness</span>
+        </div>
+        <span class="font-mono text-xs text-[#787571] group-hover:text-[#D9C3A3] transition-colors mt-2 md:mt-0 tracking-wider">Horizontal Sanctuary Suite</span>
+      </a>
+
+      <a href="#acquisition" class="menu-link group flex flex-col md:flex-row md:items-baseline justify-between border-b border-white/5 pb-4">
+        <div class="flex items-baseline gap-4 md:gap-8">
+          <span class="font-mono text-xs sm:text-sm text-[#BFA175] font-light">06</span>
+          <span class="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light uppercase tracking-tight text-white group-hover:text-[#BFA175] transition-colors duration-400">Private Acquisition</span>
+        </div>
+        <span class="font-mono text-xs text-[#787571] group-hover:text-[#D9C3A3] transition-colors mt-2 md:mt-0 tracking-wider">Confidential Consultation</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-white/10 font-mono text-[11px] text-[#787571]">
+      <div><span class="text-[#BFA175] block mb-1">LOCATION</span>Cap d'Antibes (43°33'12"N 7°07'48"E)</div>
+      <div><span class="text-[#BFA175] block mb-1">PROGRAM</span>18 Cliffside Monolithic Residences</div>
+      <div><span class="text-[#BFA175] block mb-1">DIRECT CONTACT</span>concierge@solaria-residences.com</div>
+    </div>
+  </div>
+
+  <!-- Continuous Fullscreen Main Canvas -->
+  <main class="w-full max-w-full overflow-x-hidden bg-[#0A0A0C]">
+
+    <!-- CHAPTER 01: HERO -->
+    <section id="hero" class="relative min-h-[100dvh] w-full flex flex-col justify-between p-6 sm:p-12 md:p-16 overflow-hidden select-none">
+      <!-- Full-bleed background with Day/Dusk Crossfade -->
+      <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div id="hero-day-bg" class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-luxury opacity-0 animate-kenburns scale-105" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=2400&auto=format&fit=crop');"></div>
+        <div id="hero-dusk-bg" class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-luxury opacity-100 animate-kenburns scale-105" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=85&w=2400&auto=format&fit=crop');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-[#0A0A0C]/40 to-transparent"></div>
+      </div>
+
+      <div class="relative z-10 pt-16 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-white/70">
+        <span>CAP D'ANTIBES — 43°33'N 7°07'E</span>
+        <span class="hidden sm:inline text-[#BFA175]">18 RESIDENCES</span>
+      </div>
+
+      <div class="relative z-10 my-auto max-w-5xl">
+        <h1 class="font-display text-[clamp(2.75rem,6.5vw,6.5rem)] font-light leading-[1.02] tracking-tight uppercase text-white drop-shadow-md">
+          Sculpted by light.<br />
+          <span class="font-editorial italic font-normal text-[#BFA175] ml-1">Rooted in stone.</span>
+        </h1>
+
+        <div class="mt-8">
+          <a href="#residences" data-cursor="EXPLORE" class="group inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full bg-[#BFA175] text-[#0A0A0C] font-display text-xs font-semibold tracking-wider uppercase transition-all duration-500 hover:bg-[#cca87d] active:scale-95 shadow-lg">
+            <span>Discover The Residences</span>
+            <span class="w-7 h-7 rounded-full bg-black/15 flex items-center justify-center transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="relative z-10 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-white/60">
+        <span>MMXXVI</span>
+        <a href="#manifesto" data-cursor="SCROLL" class="group flex items-center gap-2 hover:text-[#BFA175] transition-colors">
+          <span>Scroll</span>
+          <span>↓</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- CHAPTER 02: MANIFESTO -->
+    <section id="manifesto" class="relative min-h-[100dvh] w-full flex flex-col justify-center items-center px-6 sm:px-12 md:px-20 overflow-hidden select-none bg-[#0A0A0C] text-white text-center">
+      <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div id="manifesto-bg" class="absolute inset-0 bg-cover bg-center opacity-25" style="background-image: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=85&w=2400&auto=format&fit=crop');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0A0A0C] via-transparent to-[#0A0A0C]"></div>
+      </div>
+
+      <div class="relative z-10 max-w-4xl mx-auto space-y-6">
+        <span class="font-mono text-[10px] sm:text-xs text-[#BFA175] uppercase tracking-[0.35em] block">PHILOSOPHY</span>
+        <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-light uppercase tracking-tight text-white leading-[1.1]">
+          Where monolithic stone meets the Mediterranean light.
+        </h2>
+        <p class="font-editorial italic text-[#D9C3A3] text-lg sm:text-2xl md:text-3xl font-normal max-w-2xl mx-auto leading-relaxed">
+          Eighteen private sanctuaries sculpted directly into the ancient Cap d'Antibes cliff face.
+        </p>
+      </div>
+    </section>
+
+    <!-- CHAPTER 03: GALLERY OF MATERIA (PINNED SLIDES) -->
+    <section id="gallery" class="relative h-[100dvh] w-full overflow-hidden select-none bg-[#0A0A0C] text-white">
+      <!-- Slide 1 -->
+      <div class="gallery-slide-item absolute inset-0 w-full h-full flex flex-col justify-between p-6 sm:p-12 md:p-16 z-10 opacity-100">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=2400&auto=format&fit=crop');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-black/30 to-black/30"></div>
+        <div class="relative z-20 pt-16 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-white/60">
+          <span>MATERIA</span>
+          <span class="text-[#BFA175]">01 / 03</span>
+        </div>
+        <div class="relative z-20 my-auto max-w-3xl">
+          <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-light uppercase tracking-tight text-white leading-none">The Cliffside Monolith</h2>
+          <p class="font-editorial italic text-[#D9C3A3] text-base sm:text-xl md:text-2xl mt-4 max-w-xl font-normal leading-relaxed">
+            Carved directly into Cap d'Antibes granitic bedrock.
+          </p>
+        </div>
+        <div class="relative z-20 flex items-center gap-2">
+          <div class="h-1 rounded-full w-8 bg-[#BFA175]"></div>
+          <div class="h-1 rounded-full w-2 bg-white/20"></div>
+          <div class="h-1 rounded-full w-2 bg-white/20"></div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="gallery-slide-item absolute inset-0 w-full h-full flex flex-col justify-between p-6 sm:p-12 md:p-16 z-20 opacity-0">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?q=85&w=2400&auto=format&fit=crop');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-black/30 to-black/30"></div>
+        <div class="relative z-20 pt-16 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-white/60">
+          <span>MATERIA</span>
+          <span class="text-[#BFA175]">02 / 03</span>
+        </div>
+        <div class="relative z-20 my-auto max-w-3xl">
+          <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-light uppercase tracking-tight text-white leading-none">Guillotine Glass</h2>
+          <p class="font-editorial italic text-[#D9C3A3] text-base sm:text-xl md:text-2xl mt-4 max-w-xl font-normal leading-relaxed">
+            6.8-meter hydraulic panels sliding into subterranean stone.
+          </p>
+        </div>
+        <div class="relative z-20 flex items-center gap-2">
+          <div class="h-1 rounded-full w-2 bg-white/20"></div>
+          <div class="h-1 rounded-full w-8 bg-[#BFA175]"></div>
+          <div class="h-1 rounded-full w-2 bg-white/20"></div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="gallery-slide-item absolute inset-0 w-full h-full flex flex-col justify-between p-6 sm:p-12 md:p-16 z-30 opacity-0">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=85&w=2400&auto=format&fit=crop');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-black/30 to-black/30"></div>
+        <div class="relative z-20 pt-16 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-white/60">
+          <span>MATERIA</span>
+          <span class="text-[#BFA175]">03 / 03</span>
+        </div>
+        <div class="relative z-20 my-auto max-w-3xl">
+          <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-light uppercase tracking-tight text-white leading-none">Suspended Cantilevers</h2>
+          <p class="font-editorial italic text-[#D9C3A3] text-base sm:text-xl md:text-2xl mt-4 max-w-xl font-normal leading-relaxed">
+            Fourteen meters of post-tensioned stone projecting over the sea.
+          </p>
+        </div>
+        <div class="relative z-20 flex items-center gap-2">
+          <div class="h-1 rounded-full w-2 bg-white/20"></div>
+          <div class="h-1 rounded-full w-2 bg-white/20"></div>
+          <div class="h-1 rounded-full w-8 bg-[#BFA175]"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 04: THE 18 RESIDENCES -->
+    <section id="residences" class="relative min-h-[100dvh] w-full flex flex-col justify-between p-6 sm:p-12 md:p-16 overflow-hidden select-none bg-[#0A0A0C] text-white">
+      <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div id="residence-bg" class="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-luxury" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=2400&auto=format&fit=crop');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-black/35 to-black/35"></div>
+      </div>
+
+      <div class="relative z-20 pt-16 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-white/60">
+        <span>THE 18 RESIDENCES</span>
+        <span id="residence-cat-tag" class="text-[#BFA175]">GARDEN VILLA</span>
+      </div>
+
+      <div class="relative z-20 my-auto max-w-4xl">
+        <h2 id="residence-title" class="font-display text-3xl sm:text-5xl md:text-6xl font-light uppercase tracking-tight text-white leading-none">Villa Terra Nova</h2>
+        <p id="residence-desc" class="mt-3 max-w-lg text-sm sm:text-base text-white/80 font-editorial italic">
+          Sculpted into the lower cliffside with private olive groves and sunken limestone lounge.
+        </p>
+
+        <!-- Typology Switchers -->
+        <div class="mt-6 flex flex-wrap items-center gap-2">
+          <button onclick="selectResidence(0)" class="residence-btn px-4 py-2 rounded-full font-mono text-[11px] uppercase tracking-wider bg-[#BFA175] text-[#0A0A0C] font-semibold transition-all">Garden Villa</button>
+          <button onclick="selectResidence(1)" class="residence-btn px-4 py-2 rounded-full font-mono text-[11px] uppercase tracking-wider bg-black/40 hover:bg-black/60 text-white/60 border border-white/10 transition-all">Duplex Horizon</button>
+          <button onclick="selectResidence(2)" class="residence-btn px-4 py-2 rounded-full font-mono text-[11px] uppercase tracking-wider bg-black/40 hover:bg-black/60 text-white/60 border border-white/10 transition-all">Sky Penthouse</button>
+        </div>
+      </div>
+
+      <div class="relative z-20 w-full flex flex-col sm:flex-row sm:items-end justify-between gap-6 pt-6 border-t border-white/10">
+        <div class="flex items-center gap-8 font-mono text-xs">
+          <div>
+            <span class="text-[#BFA175] block text-[9px] uppercase tracking-widest">INTERIOR</span>
+            <span id="residence-int" class="text-white text-base font-light">410 m²</span>
+          </div>
+          <div>
+            <span class="text-[#BFA175] block text-[9px] uppercase tracking-widest">TERRACE</span>
+            <span id="residence-ext" class="text-white text-base font-light">280 m²</span>
+          </div>
+          <div class="hidden md:block">
+            <span class="text-[#BFA175] block text-[9px] uppercase tracking-widest">FEATURE</span>
+            <span id="residence-feat" class="text-white text-base font-light">14m Saltwater Plunge Pool</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="openBlueprintModal()" data-cursor="PLAN" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 font-mono text-xs text-white uppercase tracking-wider transition-colors flex items-center gap-1.5">
+            <span>Blueprint</span>
+          </button>
+          <a href="#acquisition" data-cursor="INQUIRE" class="group pl-5 pr-2 py-2 rounded-full bg-[#BFA175] text-[#0A0A0C] font-display text-xs font-semibold uppercase tracking-wider transition-all duration-400 hover:bg-[#cca87d] flex items-center gap-2">
+            <span>Inquire</span>
+            <span class="w-5 h-5 rounded-full bg-black/15 flex items-center justify-center">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 05: WELLNESS PANORAMA -->
+    <section id="wellness" class="relative overflow-hidden bg-[#0A0A0C] text-white">
+      <div id="wellness-trigger" class="h-[100dvh] flex flex-col justify-between p-6 sm:p-12 md:p-16 select-none">
+        <div class="pt-16 flex items-center justify-between w-full font-mono text-[10px] uppercase tracking-[0.25em] text-white/60">
+          <span>ELEMENTAL WELLNESS</span>
+          <span>4 PRIVATE RESORT SPACES</span>
+        </div>
+
+        <!-- Horizontal Track -->
+        <div class="w-full overflow-x-auto lg:overflow-x-visible scrollbar-none my-auto">
+          <div id="wellness-track" class="flex flex-col lg:flex-row gap-8 lg:gap-12 w-full lg:w-max items-center">
+            <!-- Space 1 -->
+            <div data-cursor="PAN" class="w-full lg:w-[75vw] max-w-5xl h-[55vh] lg:h-[60vh] flex-shrink-0 relative rounded-3xl overflow-hidden border border-white/10 group shadow-xl">
+              <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=85&w=2000&auto=format&fit=crop');"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-black/30 to-black/30"></div>
+              <div class="absolute inset-0 p-6 sm:p-10 flex flex-col justify-between">
+                <span class="font-mono text-sm text-[#BFA175] font-light">01 / 04</span>
+                <div class="max-w-xl">
+                  <h3 class="font-display text-2xl sm:text-4xl md:text-5xl uppercase font-light text-white tracking-tight leading-none mb-2">Cantilevered Marine Pool</h3>
+                  <p class="text-xs sm:text-base text-white/80 font-editorial italic">A 45-meter saltwater basin suspended over the open Mediterranean sea.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Space 2 -->
+            <div data-cursor="PAN" class="w-full lg:w-[75vw] max-w-5xl h-[55vh] lg:h-[60vh] flex-shrink-0 relative rounded-3xl overflow-hidden border border-white/10 group shadow-xl">
+              <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=85&w=2000&auto=format&fit=crop');"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-black/30 to-black/30"></div>
+              <div class="absolute inset-0 p-6 sm:p-10 flex flex-col justify-between">
+                <span class="font-mono text-sm text-[#BFA175] font-light">02 / 04</span>
+                <div class="max-w-xl">
+                  <h3 class="font-display text-2xl sm:text-4xl md:text-5xl uppercase font-light text-white tracking-tight leading-none mb-2">Roman Thermal Vault</h3>
+                  <p class="text-xs sm:text-base text-white/80 font-editorial italic">Subterranean basalt caldarium and sensory hydrotherapy carved in bedrock.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Space 3 -->
+            <div data-cursor="PAN" class="w-full lg:w-[75vw] max-w-5xl h-[55vh] lg:h-[60vh] flex-shrink-0 relative rounded-3xl overflow-hidden border border-white/10 group shadow-xl">
+              <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=85&w=2000&auto=format&fit=crop');"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-black/30 to-black/30"></div>
+              <div class="absolute inset-0 p-6 sm:p-10 flex flex-col justify-between">
+                <span class="font-mono text-sm text-[#BFA175] font-light">03 / 04</span>
+                <div class="max-w-xl">
+                  <h3 class="font-display text-2xl sm:text-4xl md:text-5xl uppercase font-light text-white tracking-tight leading-none mb-2">Private Sommelier Chai</h3>
+                  <p class="text-xs sm:text-base text-white/80 font-editorial italic">A geological climate-controlled vault housing 6,000 rare grand crus.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Space 4 -->
+            <div data-cursor="PAN" class="w-full lg:w-[75vw] max-w-5xl h-[55vh] lg:h-[60vh] flex-shrink-0 relative rounded-3xl overflow-hidden border border-white/10 group shadow-xl">
+              <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=85&w=2000&auto=format&fit=crop');"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-black/30 to-black/30"></div>
+              <div class="absolute inset-0 p-6 sm:p-10 flex flex-col justify-between">
+                <span class="font-mono text-sm text-[#BFA175] font-light">04 / 04</span>
+                <div class="max-w-xl">
+                  <h3 class="font-display text-2xl sm:text-4xl md:text-5xl uppercase font-light text-white tracking-tight leading-none mb-2">Bio-Optimization Studio</h3>
+                  <p class="text-xs sm:text-base text-white/80 font-editorial italic">Panoramic athletic pavilion with Technogym Biostrength and sunrise yoga deck.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-white/50 pt-4 border-t border-white/10">
+          <span>EXCLUSIVELY FOR RESIDENTS</span>
+          <span class="text-[#BFA175]">Scroll to pan →</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 06: PRIVATE ACQUISITION -->
+    <section id="acquisition" class="relative min-h-[100dvh] w-full flex flex-col justify-between p-6 sm:p-12 md:p-16 overflow-hidden select-none bg-[#0A0A0C] text-white">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#BFA175]/5 rounded-full blur-[160px] pointer-events-none"></div>
+
+      <div class="relative z-20 pt-16 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-white/60">
+        <span>CONFIDENTIAL ACQUISITION</span>
+        <span>SWISS NDA STANDARD</span>
+      </div>
+
+      <div class="relative z-20 my-auto max-w-2xl w-full mx-auto">
+        <div class="text-center mb-8">
+          <h2 class="font-display text-3xl sm:text-5xl font-light uppercase tracking-tight text-white leading-none">Private Consultation</h2>
+          <p class="mt-2 text-sm text-white/70 font-editorial italic">Direct coordination with the Principal Architect.</p>
+        </div>
+
+        <div class="p-8 sm:p-10 rounded-3xl bg-[#111116] border border-white/10 shadow-2xl">
+          <form id="acquisition-form" onsubmit="handleAcquisitionSubmit(event)" class="space-y-4">
+            <div>
+              <label class="font-mono text-[10px] uppercase tracking-widest text-[#BFA175] block mb-1.5">Principal Name / Family Office *</label>
+              <input id="acq-name" type="text" required placeholder="Lord Alexander Sinclair" class="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-[#BFA175] focus:outline-none font-display text-xs text-white placeholder:text-white/30 transition-colors" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="font-mono text-[10px] uppercase tracking-widest text-[#BFA175] block mb-1.5">Confidential Email *</label>
+                <input id="acq-email" type="email" required placeholder="principal@familyoffice.ch" class="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-[#BFA175] focus:outline-none font-display text-xs text-white placeholder:text-white/30 transition-colors" />
+              </div>
+              <div>
+                <label class="font-mono text-[10px] uppercase tracking-widest text-[#BFA175] block mb-1.5">Encrypted Phone / Signal</label>
+                <input id="acq-phone" type="tel" placeholder="+41 22 819 00 00" class="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-[#BFA175] focus:outline-none font-display text-xs text-white placeholder:text-white/30 transition-colors" />
+              </div>
+            </div>
+
+            <div class="pt-2 flex items-center justify-between text-[11px] font-mono text-white/60">
+              <span class="text-[#BFA175]">✓ Non-Disclosure Assurance</span>
+              <span>Strict Swiss Escrow</span>
+            </div>
+
+            <div class="pt-4 flex justify-center">
+              <button type="submit" data-cursor="SUBMIT" class="group inline-flex items-center gap-3 pl-8 pr-2.5 py-2.5 rounded-full bg-[#BFA175] text-[#0A0A0C] font-display text-xs font-semibold tracking-wider uppercase transition-all duration-500 hover:bg-[#cca87d] active:scale-95 shadow-lg cursor-pointer">
+                <span>Transmit Confidential Request</span>
+                <span class="w-7 h-7 rounded-full bg-black/15 flex items-center justify-center transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+              </button>
+            </div>
+          </form>
+
+          <!-- Success View -->
+          <div id="acquisition-success" class="hidden text-center py-6 space-y-3">
+            <div class="w-10 h-10 rounded-full bg-[#BFA175]/20 text-[#BFA175] mx-auto flex items-center justify-center border border-[#BFA175]/40 text-lg">✓</div>
+            <div>
+              <span id="booking-ref-text" class="font-mono text-xs text-[#BFA175] tracking-widest uppercase">CONFIRMED</span>
+              <h3 class="font-display text-xl uppercase font-light text-white mt-1">Dossier Dispatched</h3>
+            </div>
+            <p class="text-xs text-white/70 font-light leading-relaxed max-w-sm mx-auto">
+              Your confidential dossier transmission is being processed by the Managing Partner.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative z-20 flex flex-col sm:flex-row items-center justify-between gap-2 pt-4 border-t border-white/10 font-mono text-[9px] uppercase tracking-widest text-white/40">
+        <div>© MMXXVI SOLARIA RESIDENCES • CAP D'ANTIBES</div>
+        <div>STRICT DISCRETION GUARANTEED</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive Blueprint Modal -->
+  <div id="blueprint-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 sm:p-12 bg-black/85 backdrop-blur-2xl opacity-0 pointer-events-none transition-all duration-300">
+    <div class="relative w-full max-w-3xl p-8 rounded-3xl bg-[#0E0E12] border border-white/15 text-white">
+      <div class="flex justify-between items-center pb-4 border-b border-white/10 mb-6 font-mono text-xs">
+        <span id="blueprint-modal-title" class="text-[#BFA175] uppercase tracking-widest">Villa Terra Nova • 410 m²</span>
+        <button onclick="closeBlueprintModal()" class="text-white/60 hover:text-white uppercase tracking-widest">[ CLOSE ]</button>
+      </div>
+
+      <div class="h-56 sm:h-72 w-full rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center p-4">
+        <svg viewBox="0 0 600 350" class="w-full h-full stroke-[#BFA175] fill-none">
+          <rect x="20" y="20" width="560" height="310" stroke-width="1.5" stroke-dasharray="3,3" />
+          <rect x="40" y="40" width="300" height="180" stroke-width="1.5" class="fill-[#BFA175]/15" />
+          <text x="190" y="135" fill="white" text-anchor="middle" class="font-mono text-xs tracking-widest">LIVING SALON</text>
+          <rect x="360" y="40" width="200" height="130" stroke-width="1.5" class="fill-white/5" />
+          <text x="460" y="110" fill="white" text-anchor="middle" class="font-mono text-xs tracking-widest">MASTER SUITE</text>
+          <rect x="40" y="240" width="520" height="70" stroke-width="1.5" class="fill-cyan-500/10 stroke-cyan-400/50" />
+          <text x="300" y="280" fill="white" text-anchor="middle" class="font-mono text-xs tracking-widest">INFINITY TERRACE &amp; POOL</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pure JavaScript Orchestration -->
+  <script>
+    // 1. Lenis Smooth Scroll Setup
+    let lenis;
+    if (typeof Lenis !== "undefined") {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
+        gestureOrientation: "vertical",
+        smoothWheel: true,
+        wheelMultiplier: 0.85
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    }
+
+    // 2. Preloader Logic
+    let preloaderProgress = 0;
+    const preloaderEl = document.getElementById("preloader");
+    const preloaderCounter = document.getElementById("preloader-counter");
+    const preloaderArch = document.getElementById("preloader-arch");
+
+    function dismissPreloader() {
+      if (!preloaderEl) return;
+      preloaderEl.style.clipPath = "ellipse(150% 150% at 50% 50%)";
+      preloaderEl.style.opacity = "0";
+      setTimeout(() => {
+        preloaderEl.style.display = "none";
+      }, 600);
+    }
+
+    preloaderEl.addEventListener("click", dismissPreloader);
+
+    const preloaderTimer = setInterval(() => {
+      preloaderProgress += Math.floor(Math.random() * 14) + 8;
+      if (preloaderProgress >= 100) {
+        preloaderProgress = 100;
+        clearInterval(preloaderTimer);
+        preloaderCounter.textContent = "100%";
+        preloaderArch.style.strokeDashoffset = "0";
+        setTimeout(dismissPreloader, 250);
+      } else {
+        preloaderCounter.textContent = String(preloaderProgress).padStart(2, "0") + "%";
+        preloaderArch.style.strokeDashoffset = String(400 - (preloaderProgress / 100) * 400);
+      }
+    }, 25);
+
+    setTimeout(dismissPreloader, 1200);
+
+    // 3. Day / Dusk Ambiance Switcher
+    let isDusk = true;
+    const duskToggle = document.getElementById("dusk-toggle");
+    const heroDayBg = document.getElementById("hero-day-bg");
+    const heroDuskBg = document.getElementById("hero-dusk-bg");
+    const moonIcon = document.getElementById("moon-icon");
+    const sunIcon = document.getElementById("sun-icon");
+    const duskText = document.getElementById("dusk-text");
+
+    duskToggle.addEventListener("click", () => {
+      isDusk = !isDusk;
+      if (isDusk) {
+        heroDuskBg.style.opacity = "1";
+        heroDayBg.style.opacity = "0";
+        moonIcon.classList.remove("hidden");
+        sunIcon.classList.add("hidden");
+        duskText.textContent = "Dusk";
+        document.documentElement.classList.add("dark");
+      } else {
+        heroDuskBg.style.opacity = "0";
+        heroDayBg.style.opacity = "1";
+        moonIcon.classList.add("hidden");
+        sunIcon.classList.remove("hidden");
+        duskText.textContent = "Day";
+        document.documentElement.classList.remove("dark");
+      }
+    });
+
+    // 4. Pure Web Audio API Ambient Sound
+    let isAudioPlaying = false;
+    let audioCtx, gainNode, whiteNoise;
+    const soundToggle = document.getElementById("sound-toggle");
+    const soundIconOn = document.getElementById("sound-icon-on");
+    const soundIconOff = document.getElementById("sound-icon-off");
+    const soundText = document.getElementById("sound-text");
+
+    soundToggle.addEventListener("click", () => {
+      if (!isAudioPlaying) {
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContextClass();
+          const bufferSize = 2 * audioCtx.sampleRate;
+          const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+          for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            b0 = 0.99886 * b0 + white * 0.0555179;
+            b1 = 0.99332 * b1 + white * 0.0750759;
+            b2 = 0.969 * b2 + white * 0.153852;
+            b3 = 0.8665 * b3 + white * 0.3104856;
+            b4 = 0.55 * b4 + white * 0.5329522;
+            b5 = -0.7616 * b5 - white * 0.016898;
+            output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+            output[i] *= 0.035;
+            b6 = white * 0.115926;
+          }
+          whiteNoise = audioCtx.createBufferSource();
+          whiteNoise.buffer = noiseBuffer;
+          whiteNoise.loop = true;
+          const filter = audioCtx.createBiquadFilter();
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(320, audioCtx.currentTime);
+          gainNode = audioCtx.createGain();
+          gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 2);
+          whiteNoise.connect(filter);
+          filter.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          whiteNoise.start(0);
+
+          isAudioPlaying = true;
+          soundIconOn.classList.remove("hidden");
+          soundIconOff.classList.add("hidden");
+          soundText.textContent = "Sound / On";
+        } catch (e) {
+          console.error(e);
+        }
+      } else {
+        if (gainNode && audioCtx) {
+          gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+          setTimeout(() => {
+            audioCtx.close();
+            isAudioPlaying = false;
+            soundIconOn.classList.add("hidden");
+            soundIconOff.classList.remove("hidden");
+            soundText.textContent = "Sound / Off";
+          }, 500);
+        }
+      }
+    });
+
+    // 5. Full-Screen Curtain Menu
+    const menuToggle = document.getElementById("menu-toggle");
+    const menuCloseBtn = document.getElementById("menu-close-btn");
+    const fullscreenMenu = document.getElementById("fullscreen-menu");
+    const menuBar1 = document.getElementById("menu-bar-1");
+    const menuBar2 = document.getElementById("menu-bar-2");
+    let isMenuOpen = false;
+
+    function toggleMenu(open) {
+      isMenuOpen = open !== undefined ? open : !isMenuOpen;
+      if (isMenuOpen) {
+        fullscreenMenu.style.pointerEvents = "auto";
+        fullscreenMenu.style.opacity = "1";
+        fullscreenMenu.style.clipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)";
+        menuBar1.style.transform = "rotate(45deg) translateY(4.5px)";
+        menuBar1.style.backgroundColor = "#BFA175";
+        menuBar2.style.transform = "rotate(-45deg) translateY(-4.5px)";
+        menuBar2.style.backgroundColor = "#BFA175";
+      } else {
+        fullscreenMenu.style.pointerEvents = "none";
+        fullscreenMenu.style.opacity = "0";
+        fullscreenMenu.style.clipPath = "polygon(0 0, 100% 0, 100% 0, 0 0)";
+        menuBar1.style.transform = "none";
+        menuBar1.style.backgroundColor = "#ffffff";
+        menuBar2.style.transform = "none";
+        menuBar2.style.backgroundColor = "#ffffff";
+      }
+    }
+
+    menuToggle.addEventListener("click", () => toggleMenu());
+    menuCloseBtn.addEventListener("click", () => toggleMenu(false));
+    document.querySelectorAll(".menu-link").forEach(link => {
+      link.addEventListener("click", () => toggleMenu(false));
+    });
+
+    // 6. Custom Magnetic Cursor
+    const cursorWrapper = document.getElementById("custom-cursor-wrapper");
+    const cursor = document.getElementById("custom-cursor");
+    const cursorDot = document.getElementById("cursor-dot");
+    const cursorText = document.getElementById("cursor-text");
+
+    window.addEventListener("mousemove", (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      cursor.style.transform = `translate(${x - (cursorText.textContent ? 40 : 12)}px, ${y - (cursorText.textContent ? 40 : 12)}px)`;
+      cursorDot.style.transform = `translate(${x - 3}px, ${y - 3}px)`;
+    });
+
+    document.addEventListener("mouseover", (e) => {
+      const target = e.target.closest("[data-cursor]");
+      if (target) {
+        const text = target.getAttribute("data-cursor");
+        cursorText.textContent = text;
+        cursor.style.width = "80px";
+        cursor.style.height = "80px";
+        cursorDot.style.opacity = "0";
+      } else if (e.target.closest("button, a, input, select, textarea")) {
+        cursorText.textContent = "";
+        cursor.style.width = "48px";
+        cursor.style.height = "48px";
+        cursorDot.style.opacity = "1";
+      } else {
+        cursorText.textContent = "";
+        cursor.style.width = "24px";
+        cursor.style.height = "24px";
+        cursorDot.style.opacity = "1";
+      }
+    });
+
+    // 7. Live Chapter Tracker & Scroll Progress
+    const chapters = [
+      { id: "hero", num: "01", title: "THE ENCLAVE" },
+      { id: "manifesto", num: "02", title: "MANIFESTO" },
+      { id: "gallery", num: "03", title: "GALLERY OF MATERIA" },
+      { id: "residences", num: "04", title: "THE 18 RESIDENCES" },
+      { id: "wellness", num: "05", title: "ELEMENTAL WELLNESS" },
+      { id: "acquisition", num: "06", title: "PRIVATE ACQUISITION" }
+    ];
+
+    const headerChapterNum = document.getElementById("header-chapter-num");
+    const headerChapterTitle = document.getElementById("header-chapter-title");
+    const scrollProgressBar = document.getElementById("scroll-progress-bar");
+    const scrollProgressText = document.getElementById("scroll-progress-text");
+
+    window.addEventListener("scroll", () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = totalScroll > 0 ? (window.scrollY / totalScroll) * 100 : 0;
+      scrollProgressBar.style.height = `${progress}%`;
+      scrollProgressText.textContent = `${Math.round(progress)}%`;
+
+      const scrollPos = window.scrollY + window.innerHeight * 0.4;
+      for (let i = chapters.length - 1; i >= 0; i--) {
+        const el = document.getElementById(chapters[i].id);
+        if (el && el.offsetTop <= scrollPos) {
+          headerChapterNum.textContent = chapters[i].num;
+          headerChapterTitle.textContent = chapters[i].title;
+          break;
+        }
+      }
+    });
+
+    // 8. GSAP ScrollTrigger Pinned Animations
+    if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Gallery Slides Pinned Sequence
+      const gallerySlides = document.querySelectorAll(".gallery-slide-item");
+      const gallerySection = document.getElementById("gallery");
+      if (gallerySection && gallerySlides.length > 1) {
+        const galleryTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: gallerySection,
+            start: "top top",
+            end: `+=${gallerySlides.length * 100}%`,
+            pin: true,
+            scrub: 1
+          }
+        });
+
+        gallerySlides.forEach((slide, idx) => {
+          if (idx > 0) {
+            galleryTl.fromTo(slide, { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 1, ease: "power2.inOut" });
+          }
+        });
+      }
+
+      // Horizontal Wellness Suite
+      const wellnessTrack = document.getElementById("wellness-track");
+      const wellnessTrigger = document.getElementById("wellness-trigger");
+      if (wellnessTrack && wellnessTrigger && window.innerWidth >= 1024) {
+        const scrollLength = wellnessTrack.scrollWidth - window.innerWidth + 80;
+        gsap.to(wellnessTrack, {
+          x: -scrollLength,
+          ease: "none",
+          scrollTrigger: {
+            trigger: wellnessTrigger,
+            start: "top top",
+            end: () => `+=${scrollLength * 1.1}`,
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1
+          }
+        });
+      }
+    }
+
+    // 9. Residences Data & Switcher
+    const residencesList = [
+      {
+        name: "Villa Terra Nova",
+        category: "Garden Villa",
+        area: "410 m²",
+        terrace: "280 m²",
+        feature: "14m Saltwater Plunge Pool",
+        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=2400&auto=format&fit=crop",
+        desc: "Sculpted into the lower cliffside with private olive groves and sunken limestone lounge."
+      },
+      {
+        name: "Duplex Horizon Azur",
+        category: "Duplex Horizon",
+        area: "490 m²",
+        terrace: "240 m²",
+        feature: "6.8m Cathedral Glass Salon",
+        image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?q=85&w=2400&auto=format&fit=crop",
+        desc: "Suspended mid-cliff cantilevers overlooking a 220° unobstructed Mediterranean horizon."
+      },
+      {
+        name: "The Solarium Penthouse",
+        category: "Sky Penthouse",
+        area: "720 m²",
+        terrace: "480 m²",
+        feature: "22m Glass-Bottom Sky Pool",
+        image: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=85&w=2400&auto=format&fit=crop",
+        desc: "The crown monolithic rooftop sanctuary with 360° panoramas and direct helipad access."
+      }
+    ];
+
+    let currentResIdx = 0;
+    function selectResidence(idx) {
+      currentResIdx = idx;
+      const data = residencesList[idx];
+      document.getElementById("residence-bg").style.backgroundImage = `url('${data.image}')`;
+      document.getElementById("residence-cat-tag").textContent = data.category.toUpperCase();
+      document.getElementById("residence-title").textContent = data.name;
+      document.getElementById("residence-desc").textContent = data.desc;
+      document.getElementById("residence-int").textContent = data.area;
+      document.getElementById("residence-ext").textContent = data.terrace;
+      document.getElementById("residence-feat").textContent = data.feature;
+      document.getElementById("blueprint-modal-title").textContent = `${data.name} • ${data.area}`;
+
+      const btns = document.querySelectorAll(".residence-btn");
+      btns.forEach((btn, i) => {
+        if (i === idx) {
+          btn.className = "residence-btn px-4 py-2 rounded-full font-mono text-[11px] uppercase tracking-wider bg-[#BFA175] text-[#0A0A0C] font-semibold transition-all";
+        } else {
+          btn.className = "residence-btn px-4 py-2 rounded-full font-mono text-[11px] uppercase tracking-wider bg-black/40 hover:bg-black/60 text-white/60 border border-white/10 transition-all";
+        }
+      });
+    }
+
+    // 10. Blueprint Modal
+    const blueprintModal = document.getElementById("blueprint-modal");
+    function openBlueprintModal() {
+      blueprintModal.style.pointerEvents = "auto";
+      blueprintModal.style.opacity = "1";
+    }
+    function closeBlueprintModal() {
+      blueprintModal.style.pointerEvents = "none";
+      blueprintModal.style.opacity = "0";
+    }
+
+    // 11. Acquisition Form Handling
+    function handleAcquisitionSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById("acq-name").value;
+      const ref = `SOL-MMXXVI-${Math.floor(1000 + Math.random() * 9000)}`;
+      document.getElementById("booking-ref-text").textContent = `CONFIRMED • REF: ${ref}`;
+      document.getElementById("acquisition-form").classList.add("hidden");
+      document.getElementById("acquisition-success").classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
