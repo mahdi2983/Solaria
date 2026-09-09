@@ -59,7 +59,7 @@ export function FullscreenGalleryStack() {
             slides.length - 1,
             Math.floor(self.progress * slides.length)
           );
-          setCurrentSlideIndex(idx);
+          setCurrentSlideIndex((prev) => (prev === idx ? prev : idx));
         },
       },
     });

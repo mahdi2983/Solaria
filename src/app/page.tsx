@@ -18,29 +18,36 @@ export default function Home() {
     title: "THE ENCLAVE",
   });
 
-  // Track active chapter on scroll
+  // Track active chapter on scroll with RAF throttle & change guard
   useEffect(() => {
+    const sections = [
+      { id: "hero", number: "01", title: "THE ENCLAVE" },
+      { id: "manifesto", number: "02", title: "MANIFESTO" },
+      { id: "gallery", number: "03", title: "GALLERY OF MATERIA" },
+      { id: "residences", number: "04", title: "THE 18 RESIDENCES" },
+      { id: "wellness", number: "05", title: "ELEMENTAL WELLNESS" },
+      { id: "acquisition", number: "06", title: "PRIVATE ACQUISITION" },
+    ];
+
+    let ticking = false;
+
     const handleScroll = () => {
-      const sections = [
-        { id: "hero", number: "01", title: "THE ENCLAVE" },
-        { id: "manifesto", number: "02", title: "MANIFESTO" },
-        { id: "gallery", number: "03", title: "GALLERY OF MATERIA" },
-        { id: "residences", number: "04", title: "THE 18 RESIDENCES" },
-        { id: "wellness", number: "05", title: "ELEMENTAL WELLNESS" },
-        { id: "acquisition", number: "06", title: "PRIVATE ACQUISITION" },
-      ];
-
-      const scrollPos = window.scrollY + window.innerHeight * 0.4;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i].id);
-        if (el && el.offsetTop <= scrollPos) {
-          setCurrentChapter({
-            number: sections[i].number,
-            title: sections[i].title,
-          });
-          break;
-        }
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollPos = window.scrollY + window.innerHeight * 0.4;
+          for (let i = sections.length - 1; i >= 0; i--) {
+            const el = document.getElementById(sections[i].id);
+            if (el && el.offsetTop <= scrollPos) {
+              const sec = sections[i];
+              setCurrentChapter((prev) =>
+                prev.number === sec.number ? prev : { number: sec.number, title: sec.title }
+              );
+              break;
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 

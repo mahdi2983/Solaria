@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, ArrowUpRight } from "@phosphor-icons/react";
 import { AmbientSound } from "@/components/AmbientSound";
@@ -17,14 +17,29 @@ export function FullscreenHeader({
   currentChapter,
 }: FullscreenHeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrollPercent, setScrollPercent] = useState(0);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const progressTextRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const totalScroll =
-        document.documentElement.scrollHeight - window.innerHeight;
-      if (totalScroll > 0) {
-        setScrollPercent(Math.min(100, Math.max(0, (window.scrollY / totalScroll) * 100)));
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const totalScroll =
+            document.documentElement.scrollHeight - window.innerHeight;
+          const progress =
+            totalScroll > 0
+              ? Math.min(100, Math.max(0, (window.scrollY / totalScroll) * 100))
+              : 0;
+          if (progressBarRef.current) {
+            progressBarRef.current.style.height = `${progress}%`;
+          }
+          if (progressTextRef.current) {
+            progressTextRef.current.textContent = `${Math.round(progress)}%`;
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -134,12 +149,16 @@ export function FullscreenHeader({
       <div className="fixed right-3 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col items-center gap-2 pointer-events-none">
         <div className="w-[2px] h-28 bg-white/10 rounded-full overflow-hidden">
           <div
-            className="w-full bg-solaria-bronze transition-all duration-150 ease-out rounded-full"
-            style={{ height: `${scrollPercent}%` }}
+            ref={progressBarRef}
+            className="w-full bg-solaria-bronze rounded-full"
+            style={{ height: "0%" }}
           />
         </div>
-        <span className="font-mono text-[8px] text-solaria-bronze/80 tracking-widest uppercase rotate-90 mt-2">
-          {Math.round(scrollPercent)}%
+        <span
+          ref={progressTextRef}
+          className="font-mono text-[8px] text-solaria-bronze/80 tracking-widest uppercase rotate-90 mt-2"
+        >
+          0%
         </span>
       </div>
 
