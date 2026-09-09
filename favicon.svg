@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="16" fill="#0A0A0C"/>
+  <rect x="1" y="1" width="62" height="62" rx="15" stroke="#BFA175" stroke-opacity="0.35" stroke-width="1.5"/>
+  <defs>
+    <linearGradient id="solaria-gold" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F1EFEA"/>
+      <stop offset="45%" stop-color="#D9C3A3"/>
+      <stop offset="100%" stop-color="#BFA175"/>
+    </linearGradient>
+  </defs>
+  <!-- Architectural Roman Vault Arch & Monolith Geometry -->
+  <path d="M20 46V28C20 21.3726 25.3726 16 32 16C38.6274 16 44 21.3726 44 28V46" stroke="url(#solaria-gold)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M26 46V29C26 25.6863 28.6863 23 32 23C35.3137 23 38 25.6863 38 29V46" stroke="url(#solaria-gold)" stroke-width="1.5" stroke-opacity="0.7"/>
+  <!-- Central Sun Disc Monolith -->
+  <circle cx="32" cy="32" r="4.5" fill="url(#solaria-gold)"/>
+  <!-- Foundational Horizon Slab -->
+  <line x1="14" y1="46" x2="50" y2="46" stroke="url(#solaria-gold)" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
