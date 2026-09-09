@@ -91,7 +91,7 @@
       border-radius: 9999px;
     }
 
-    /* SVG Grain Texture Overlay */
+    /* GPU-Accelerated Hardware Noise Overlay */
     .noise-overlay {
       position: fixed;
       top: 0;
@@ -101,6 +101,10 @@
       pointer-events: none;
       z-index: 9999;
       opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      transform: translateZ(0);
+      will-change: transform;
     }
 
     /* Ken Burns Ambient Zoom */
@@ -120,16 +124,8 @@
 
 <body class="bg-[#0A0A0C] text-[#EDEDF0] selection:bg-[#BFA175] selection:text-[#0A0A0C]">
 
-  <!-- SVG Noise Filter Overlay -->
-  <div class="noise-overlay" aria-hidden="true">
-    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-      <filter id="noiseFilter">
-        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
-        <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" />
-      </filter>
-      <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-    </svg>
-  </div>
+  <!-- Hardware-Accelerated Noise Overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
 
   <!-- Bespoke Luxury Custom Cursor -->
   <div id="custom-cursor-wrapper" class="hidden lg:block pointer-events-none fixed inset-0 z-[99999] overflow-hidden">
