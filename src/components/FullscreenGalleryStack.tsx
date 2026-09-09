@@ -53,7 +53,7 @@ export function FullscreenGalleryStack() {
         start: "top top",
         end: `+=${slides.length * 100}%`,
         pin: true,
-        scrub: 1,
+        scrub: true,
         onUpdate: (self) => {
           const idx = Math.min(
             slides.length - 1,

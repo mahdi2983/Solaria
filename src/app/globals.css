@@ -31,8 +31,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html {
-  scroll-behavior: auto; /* Lenis handles smooth scrolling */
+html,
+body,
+html.lenis,
+html.lenis-smooth {
+  scroll-behavior: auto !important; /* Lenis handles smooth scrolling */
+  height: auto;
 }
 
 body {

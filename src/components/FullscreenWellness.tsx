@@ -61,7 +61,7 @@ export function FullscreenWellness() {
           trigger: triggerRef.current,
           start: "top top",
           end: () => `+=${scrollLength * 1.1}`,
-          scrub: 1,
+          scrub: true,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,

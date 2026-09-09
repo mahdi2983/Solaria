@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
@@ -58,6 +58,14 @@
       --font-display: 'Syne', sans-serif;
       --font-editorial: 'Playfair Display', serif;
       --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html,
+    body,
+    html.lenis,
+    html.lenis-smooth {
+      scroll-behavior: auto !important;
+      height: auto;
     }
 
     * {
@@ -910,7 +918,7 @@
             start: "top top",
             end: `+=${gallerySlides.length * 100}%`,
             pin: true,
-            scrub: 1
+            scrub: true
           }
         });
 
@@ -933,7 +941,7 @@
             trigger: wellnessTrigger,
             start: "top top",
             end: () => `+=${scrollLength * 1.1}`,
-            scrub: 1,
+            scrub: true,
             pin: true,
             anticipatePin: 1
           }

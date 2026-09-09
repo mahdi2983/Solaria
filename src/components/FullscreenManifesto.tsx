@@ -27,7 +27,7 @@ export function FullscreenManifesto() {
           trigger: textRef.current,
           start: "top 75%",
           end: "bottom 40%",
-          scrub: 1,
+          scrub: true,
         },
       }
     );
